@@ -1,4 +1,4 @@
-#include "libft.h"
+#include "cube.h"
 
 int rows_check(char **map)
 {

@@ -1,25 +1,6 @@
-#include "libft.h"
+#include "cube.h"
 
-char **copy_map(char **file, int start, int end)
-{
-    int i;
-    char **map;
-
-    map = (char **)malloc((end - start + 2) * sizeof(char *));
-    if (!map)
-        return NULL;
-    i = 0;
-    while (start <= end)
-    {
-        map[i] = ft_strdup(file[start]);
-        i++;
-        start++;
-    }
-    map[i] = NULL;
-    return map;
-}
-
-char **map_read(char **file)
+char **load_map(char **file)
 {
     int map_start;
     int map_end;
@@ -40,19 +21,6 @@ char **map_read(char **file)
     map_start = row + 1;
     map = copy_map(file, map_start, map_end);
     return map;
-}
-
-int count_lines(int fd)
-{
-    int line_count = 0;
-    char *line;
-
-    while ((line = get_next_line(fd)) != NULL)
-    {
-        line_count++;
-        free(line);
-    }
-    return line_count;
 }
 
 char **read_file(char *filename)
@@ -81,4 +49,51 @@ char **read_file(char *filename)
     }
     close(fd);
     return file;
+}
+
+int load_textures(char **file, t_config *config)
+{
+    int i;
+
+    i = 0;
+    while (file[i] && is_map(file[i]) == 0)
+    {
+        if (is_texture(file[i]))
+        {
+            if (parse_texture(file[i], config) == -1)
+                return -1;
+            add_texture(file[i], config);
+        }
+        i++;
+    }
+}
+
+int load_colors(char **file, t_config *config)
+{
+    int i;
+
+    i = 0;
+    while (file[i] && is_map(file[i]) == 0)
+    {
+        if (is_color(file[i]) == 1)
+        {
+            if (parse_color(file[i], config) == -1)
+                return 0;
+            add_color(file[i], config);
+        }
+        i++;
+    }
+    return (1);
+}
+
+int file_loader(char **file, t_config *config)
+{
+    config->map = load_map(file);
+    if (!config->map)
+        return 0;
+    if (load_textures(file, config) == -1)
+        return 0;
+    if (load_colors(file, config) == -1)
+        return 0;
+    return 1;
 }
