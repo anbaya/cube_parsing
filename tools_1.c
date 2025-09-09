@@ -34,7 +34,7 @@ char **copy_map(char **file, int start, int end)
 
 int is_map(char *line)
 {
-    if (!line)
+    if (!line || !line[0])
         return (0);
     while (*line)
     {

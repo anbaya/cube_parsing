@@ -47,6 +47,7 @@ char **read_file(char *filename)
         file[i] = get_next_line(fd);
         i++;
     }
+    file[i] = NULL;
     close(fd);
     return file;
 }
