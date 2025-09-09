@@ -60,12 +60,14 @@ int load_textures(char **file, t_config *config)
     {
         if (is_texture(file[i]))
         {
-            if (parse_texture(file[i], config) == -1)
+            if (!parse_texture(config, file[i]))
                 return -1;
-            add_texture(file[i], config);
+            if (!add_texture(file[i], config))
+                return -1;
         }
         i++;
     }
+    return 1;
 }
 
 int load_colors(char **file, t_config *config)
@@ -77,13 +79,14 @@ int load_colors(char **file, t_config *config)
     {
         if (is_color(file[i]) == 1)
         {
-            if (parse_color(file[i], config) == -1)
-                return 0;
-            add_color(file[i], config);
+            if (parse_color(file[i]) == 0)
+                return -1;
+            if (add_color(file[i], config) == 0)
+                return -1;
         }
         i++;
     }
-    return (1);
+    return 1;
 }
 
 int file_loader(char **file, t_config *config)

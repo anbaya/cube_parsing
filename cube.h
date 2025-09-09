@@ -1,6 +1,10 @@
 # ifndef CUBE_H
 # define CUBE_H
 
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "libft.h"
 #include "mlx.h"
 #include "get_next_line.h"
@@ -23,15 +27,29 @@ typedef struct s_config
     int ceiling_color[3]; // RGB values for ceiling color
 } t_config;
 
-int file_loader(char **file, t_config *config);
+// reading / loading
 char **read_file(char *filename);
+int file_loader(char **file, t_config *config);
 char **load_map(char **file);
 int load_textures(char **file, t_config *config);
+int load_colors(char **file, t_config *config);
+
+// texture helpers
 int is_map(char *line);
 int is_texture(char *line);
 int parse_texture(t_config *config, char *line);
 int add_texture(char *line, t_config *config);
+
+// color helpers
+int is_color(char *line);
+int parse_color(char *line); // only validates
+int add_color(char *line, t_config *config);
+
+// generic utils
+int count_lines(int fd);
+char **copy_map(char **file, int start, int end);
+
+// init
 t_config *init_config(char *filename);
-int file_loader(char **file, t_config *config);
 
 # endif // CUBE_H

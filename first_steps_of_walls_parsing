@@ -3,7 +3,7 @@
 int rows_check(char **map)
 {
     int index;
-    int row_length;
+    int last_row;
 
     index = -1;
     // Check the first row
