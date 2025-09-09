@@ -67,7 +67,7 @@ int parse_texture(t_config *config, char *line)
 {
     void *img;
 
-    img = mlx_xpm_file_to_image(config->mlx, line + 3);
+    img = mlx_xpm_file_to_image(config->mlx, line + 3, &(int){2}, &(int){2});
     if (!img)
     {
         ft_putstr_fd("Error: Failed to load texture\n", 2);

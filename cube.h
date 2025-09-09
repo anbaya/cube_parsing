@@ -2,6 +2,8 @@
 # define CUBE_H
 
 #include "libft.h"
+#include "mlx.h"
+#include "get_next_line.h"
 
 typedef struct s_config
 {
