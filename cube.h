@@ -15,6 +15,9 @@ typedef struct s_config
     void *win;
     char **file;
     char **map;
+    char **nap;
+    int num_rows;
+    int row_length;
     char *no_path;
     char *so_path;
     char *we_path;
@@ -33,6 +36,7 @@ int file_loader(char **file, t_config *config);
 char **load_map(char **file);
 int load_textures(char **file, t_config *config);
 int load_colors(char **file, t_config *config);
+char **map_dup(t_config *config);
 
 // texture helpers
 int is_map(char *line);
@@ -51,5 +55,13 @@ char **copy_map(char **file, int start, int end);
 
 // init
 t_config *init_config(char *filename);
+
+// map parsing
+int map_parsing(t_config *config, int i, int j);
+int rows_check(char **map);
+int columns_check(char **map);
+int	empty_check(char **map, int x, int y);
+int map_char_check(char **map);
+int fname_check(char *fname);
 
 # endif // CUBE_H

@@ -32,19 +32,31 @@ char **copy_map(char **file, int start, int end)
     return map;
 }
 
+static int is_map_char(char c)
+{
+    return (c == '0' || c == '1' || c == '2' ||
+            c == 'N' || c == 'S' || c == 'E' || c == 'W' ||
+            c == ' ');
+}
+
 int is_map(char *line)
 {
-    if (!line || !line[0])
+    int i;
+    int seen;
+
+    if (!line)
         return (0);
-    while (*line)
+    i = 0;
+    seen = 0;
+    while (line[i] && line[i] != '\n' && line[i] != '\r')
     {
-        if (*line != '0' && *line != '1' && *line != '2'
-            && *line != 'N' && *line != 'S' && *line != 'E'
-            && *line != 'W' && *line != ' ')
+        if (!is_map_char(line[i]))
             return (0);
-        line++;
+        if (line[i] != ' ')
+            seen = 1;
+        i++;
     }
-    return (1);   
+    return (seen);
 }
 
 int is_texture(char *line)

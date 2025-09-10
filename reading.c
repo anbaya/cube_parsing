@@ -1,5 +1,26 @@
 #include "cube.h"
 
+int map_parsing(t_config *config, int i, int j)
+{
+    static int space;
+
+    if (i < 0 || j < 0 || i >= config->num_rows || j == '\0')
+        return 0;
+    if (config->nap[i][j] == '1' || config->nap[i][j] == '@')
+        return 0;
+    if (config->nap[i][j] == ' ')
+        space = 1;
+    config->nap[i][j] = '@';
+    map_parsing(config, i + 1, j);
+    map_parsing(config, i - 1, j);
+    map_parsing(config, i, j + 1);
+    map_parsing(config, i, j - 1);
+    if (space == 1)
+        return 1;
+    else
+        return 0;
+}
+
 char **load_map(char **file)
 {
     int map_start;
@@ -92,9 +113,18 @@ int load_colors(char **file, t_config *config)
 
 int file_loader(char **file, t_config *config)
 {
+    int i;
+
+    i = 0;
     config->map = load_map(file);
     if (!config->map)
         return 0;
+    while (config->map[i])
+        i++;
+    config->num_rows = i;
+    config->nap = map_dup(config);
+    if (!config->nap)
+        return 0; 
     if (load_textures(file, config) == -1)
         return 0;
     if (load_colors(file, config) == -1)

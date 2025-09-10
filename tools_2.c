@@ -80,3 +80,21 @@ int add_color(char *line, t_config *config)
     }
     return (1);
 }
+
+char **map_dup(t_config *config)
+{
+    int i;
+    char **nap;
+
+    nap = malloc(sizeof(char *) * (config->num_rows + 1));
+    if (!nap)
+        return NULL;
+    i = 0;
+    while (config->map[i])
+    {
+        nap[i] = ft_strdup(config->map[i]);
+        i++;
+    }
+    nap[i] = NULL;
+    return nap;
+}

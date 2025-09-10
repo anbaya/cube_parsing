@@ -13,7 +13,10 @@ int rows_check(char **map)
         return (0);
     }
     index = -1;
-    last_row = ft_strlen(map[0]);
+    last_row = 0;
+    while (map[last_row])
+        last_row++;
+    last_row--;
     // Check the last row
     while (map[last_row][++index])
     {
@@ -48,24 +51,21 @@ int columns_check(char **map)
 
 int	empty_check(char **map, int x, int y)
 {
-	static int	floor;
+	static int	space;
 
-    // Check if the coordinates are out of bounds or if the cell is a wall or already checked
-	if (x < 0 || y < 0 || x > row_length || y >= num_rows
-		|| map[y][x] == '1' || map[y][x] == 'X')
-		return (0);
-    // Check if the cell is a floor cell
-	if (map[y][x] == '0')
-		floor = 1;
-    // Mark the cell as checked
+    if (y < 0 || map[y] == NULL || x < 0 || map[y][x] == '\0')
+        return (0);
+    if (map[y][x] == '1' || map[y][x] == 'X')
+        return (0);
+    // If a floor cell is found, set the floor flag
+	if (map[y][x] == ' ')
+		space = 1;
 	map[y][x] = 'X';
-    // Recursively check adjacent cells
 	empty_check(map, x + 1, y);
 	empty_check(map, x - 1, y);
 	empty_check(map, x, y + 1);
 	empty_check(map, x, y - 1);
-    // Return 1 if a floor cell was found, otherwise return 0
-	if (floor == 1)
+	if (space == 1)
 		return (1);
 	else
 		return (0);
@@ -98,12 +98,10 @@ int map_char_check(char **map)
 
 int fname_check(char *fname)
 {
-    int index;
-
-    // Check if the filename is end with ".cub" or too short
-    if (ft_strlen(fname) <= 4
-        || ft_strcmp(fname + ft_strlen(fname) - 4, ".cub") != 0)
+    // Check if the filename is end with ".cube" or too short
+    if (ft_strlen(fname) <= 5 || ft_strncmp(fname + ft_strlen(fname) - 5, ".cube", 5) != 0)
     {
         return (0);
     }
+    return (1);
 }
