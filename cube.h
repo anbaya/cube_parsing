@@ -14,6 +14,8 @@ typedef struct s_config
     void *mlx;
     void *win;
     char **file;
+    int map_start;
+    int map_end;
     char **map;
     char **nap;
     int p_x;
@@ -35,7 +37,7 @@ typedef struct s_config
 // reading / loading
 char **read_file(char *filename);
 int file_loader(char **file, t_config *config);
-char **load_map(char **file);
+char **load_map(t_config *config, char **file);
 int load_textures(char **file, t_config *config);
 int load_colors(char **file, t_config *config);
 char **map_dup(t_config *config);

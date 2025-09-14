@@ -24,7 +24,7 @@ int map_parsing(t_config *config, int i, int j)
         return 0;
 }
 
-char **load_map(char **file)
+char **load_map(t_config *config, char **file)
 {
     int map_start;
     int map_end;
@@ -43,6 +43,8 @@ char **load_map(char **file)
     while (file[row] && is_map(file[row]))
         row--;
     map_start = row + 1;
+    config->map_start = map_start;
+    config->map_end = map_end;
     map = copy_map(file, map_start, map_end);
     return map;
 }
@@ -120,7 +122,7 @@ int file_loader(char **file, t_config *config)
     int i;
 
     i = 0;
-    config->map = load_map(file);
+    config->map = load_map(config, file);
     if (!config->map)
         return 0;
     while (config->map[i])
