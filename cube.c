@@ -1,50 +1,58 @@
 #include "cube.h"
 
-// static void print_config(t_config *cfg)
-// {
-//     int i;
+static void print_config(t_config *cfg)
+{
+    int i;
+    int n;
 
-//     if (!cfg)
-//         return;
-//     printf("--- CONFIG SUMMARY ---\n");
-//     printf("NO: %s\n", cfg->no_path ? cfg->no_path : "(null)");
-//     printf("SO: %s\n", cfg->so_path ? cfg->so_path : "(null)");
-//     printf("WE: %s\n", cfg->we_path ? cfg->we_path : "(null)");
-//     printf("EA: %s\n", cfg->ea_path ? cfg->ea_path : "(null)");
-//     printf("Floor: %d,%d,%d\n", cfg->floor_color[0], cfg->floor_color[1], cfg->floor_color[2]);
-//     printf("Ceiling: %d,%d,%d\n", cfg->ceiling_color[0], cfg->ceiling_color[1], cfg->ceiling_color[2]);
-//     printf("File lines:\n");
-//     if (cfg->file)
-//     {
-//         i = 0;
-//         while (cfg->file[i])
-//         {
-//             printf("  file[%d]: %s", i, cfg->file[i]);
-//             i++;
-//         }
-//     }
-//     printf("Map lines:\n");
-//     if (cfg->map)
-//     {
-//         i = 0;
-//         while (cfg->map[i])
-//         {
-//             printf("  map[%d]: %s", i, cfg->map[i]);
-//             i++;
-//         }
-//     }
-//     printf("Nap lines:\n");
-//     if (cfg->nap)
-//     {
-//         i = 0;
-//         while (cfg->nap[i])
-//         {
-//             printf("  nap[%d]: %s", i, cfg->nap[i]);
-//             i++;
-//         }
-//     }
-//     printf("-----------------------\n");
-// }
+    if (!cfg)
+        return;
+    printf("--- CONFIG SUMMARY ---\n");
+    printf("Rows: %d\n", cfg->num_rows);
+    printf("NO: %s\n", cfg->no_path ? cfg->no_path : "(null)");
+    printf("SO: %s\n", cfg->so_path ? cfg->so_path : "(null)");
+    printf("WE: %s\n", cfg->we_path ? cfg->we_path : "(null)");
+    printf("EA: %s\n", cfg->ea_path ? cfg->ea_path : "(null)");
+    printf("Floor: %d,%d,%d\n", cfg->f_rgb[0], cfg->f_rgb[1], cfg->f_rgb[2]);
+    printf("Ceiling: %d,%d,%d\n", cfg->c_rgb[0], cfg->c_rgb[1], cfg->c_rgb[2]);
+
+    n = 0; while (cfg->file && cfg->file[n]) n++;
+    printf("File lines (%d):\n", n);
+    if (cfg->file)
+    {
+        i = 0;
+        while (cfg->file[i])
+        {
+            printf("%s", cfg->file[i]);
+            i++;
+        }
+    }
+
+    n = 0; while (cfg->map && cfg->map[n]) n++;
+    printf("\nMap lines (%d):\n", n);
+    if (cfg->map)
+    {
+        i = 0;
+        while (cfg->map[i])
+        {
+            printf("%s", cfg->map[i]);
+            i++;
+        }
+    }
+
+    n = 0; while (cfg->nap && cfg->nap[n]) n++;
+    printf("\nNap lines (%d):\n", n);
+    if (cfg->nap)
+    {
+        i = 0;
+        while (cfg->nap[i])
+        {
+            printf("  nap[%d]: %s", i, cfg->nap[i]);
+            i++;
+        }
+    }
+    printf("-----------------------\n");
+}
 
 t_config *init_config(char *filename)
 {
@@ -76,7 +84,8 @@ int main(int argc, char **argv)
     config = init_config(argv[1]);
     if (!config)
         return (1);
-    if (map_parsing(config, 9, 5))
+    get_player(config, config->map);
+    if (map_parsing(config, config->p_x, config->p_y))
     {
         ft_putstr_fd("Error\nInvalid map\n", 2);
     }
@@ -85,6 +94,6 @@ int main(int argc, char **argv)
         ft_putstr_fd("Error\nInvalid map characters\n", 2);
     }
     
-    // print_config(config);
+    print_config(config);
     return (0);
 }

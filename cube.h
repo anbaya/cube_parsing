@@ -16,6 +16,8 @@ typedef struct s_config
     char **file;
     char **map;
     char **nap;
+    int p_x;
+    int p_y;
     int num_rows;
     int row_length;
     char *no_path;
@@ -26,8 +28,8 @@ typedef struct s_config
     void *south_texture;
     void *west_texture;
     void *east_texture;
-    int floor_color[3]; // RGB values for floor color
-    int ceiling_color[3]; // RGB values for ceiling color
+    int f_rgb[3];
+    int c_rgb[3];
 } t_config;
 
 // reading / loading
@@ -37,6 +39,7 @@ char **load_map(char **file);
 int load_textures(char **file, t_config *config);
 int load_colors(char **file, t_config *config);
 char **map_dup(t_config *config);
+int get_player(t_config *config, char **map);
 
 // texture helpers
 int is_map(char *line);
@@ -46,8 +49,8 @@ int add_texture(char *line, t_config *config);
 
 // color helpers
 int is_color(char *line);
-int parse_color(char *line); // only validates
-int add_color(char *line, t_config *config);
+char *parse_color(char *line); // only validates
+int add_color(char *line, char *color, t_config *config);
 
 // generic utils
 int count_lines(int fd);

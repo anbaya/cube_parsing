@@ -73,7 +73,7 @@ int parse_texture(t_config *config, char *line)
 {
     void *img;
 
-    img = mlx_xpm_file_to_image(config->mlx, line + 3, &(int){2}, &(int){2});
+    img = mlx_xpm_file_to_image(config->mlx, line, &(int){40}, &(int){40});
     if (!img)
     {
         ft_putstr_fd("Error: Failed to load texture\n", 2);
@@ -85,15 +85,22 @@ int parse_texture(t_config *config, char *line)
 
 int add_texture(char *line, t_config *config)
 {
-    if (ft_strnstr(line, "NO ", 3))
-        config->no_path = ft_strdup(line + 3);
-    else if (ft_strnstr(line, "SO ", 3))
-        config->so_path = ft_strdup(line + 3);
-    else if (ft_strnstr(line, "WE ", 3))
-        config->we_path = ft_strdup(line + 3);
-    else if (ft_strnstr(line, "EA ", 3))
-        config->ea_path = ft_strdup(line + 3);
+    char *tmp;
+
+    tmp = ft_strtrim(line + 3, " \n\r");
+    if (ft_strnstr(line, "NO ", 3) && parse_texture(config, tmp))
+        config->no_path = tmp;
+    else if (ft_strnstr(line, "SO ", 3) && parse_texture(config, tmp))
+        config->so_path = tmp;
+    else if (ft_strnstr(line, "WE ", 3) && parse_texture(config, tmp))
+        config->we_path = tmp;
+    else if (ft_strnstr(line, "EA ", 3) && parse_texture(config, tmp))
+        config->ea_path = tmp;
     else
+    {
+        free(tmp);
         return 0; // Invalid texture line
+    }
+    parse_texture(config, tmp);
     return 1;   
 }

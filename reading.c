@@ -4,12 +4,15 @@ int map_parsing(t_config *config, int i, int j)
 {
     static int space;
 
-    if (i < 0 || j < 0 || i >= config->num_rows || j == '\0')
+    if (i < 0 || j < 0 || i > config->num_rows || j > (int)ft_strlen(config->nap[i]))
         return 0;
     if (config->nap[i][j] == '1' || config->nap[i][j] == '@')
         return 0;
-    if (config->nap[i][j] == ' ')
+    if (config->nap[i][j] == ' ' || config->nap[i][j] == '\n')
+    {
         space = 1;
+        return 1;
+    }
     config->nap[i][j] = '@';
     map_parsing(config, i + 1, j);
     map_parsing(config, i - 1, j);
@@ -82,8 +85,7 @@ int load_textures(char **file, t_config *config)
     {
         if (is_texture(file[i]))
         {
-            if (!parse_texture(config, file[i]))
-                return -1;
+
             if (!add_texture(file[i], config))
                 return -1;
         }
@@ -95,15 +97,17 @@ int load_textures(char **file, t_config *config)
 int load_colors(char **file, t_config *config)
 {
     int i;
+    char *tmp;
 
     i = 0;
     while (file[i] && is_map(file[i]) == 0)
     {
         if (is_color(file[i]) == 1)
         {
-            if (parse_color(file[i]) == 0)
+            tmp = parse_color(file[i]);
+            if (!tmp)
                 return -1;
-            if (add_color(file[i], config) == 0)
+            if (!add_color(file[i], tmp, config))
                 return -1;
         }
         i++;
