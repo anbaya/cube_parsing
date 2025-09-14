@@ -51,8 +51,9 @@ int add_texture(char *line, t_config *config);
 
 // color helpers
 int is_color(char *line);
-char *parse_color(char *line); // only validates
+char *read_color(char *line);
 int add_color(char *line, char *color, t_config *config);
+int parse_color(t_config *config);
 
 // generic utils
 int count_lines(int fd);

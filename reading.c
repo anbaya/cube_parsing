@@ -106,10 +106,12 @@ int load_colors(char **file, t_config *config)
     {
         if (is_color(file[i]) == 1)
         {
-            tmp = parse_color(file[i]);
+            tmp = read_color(file[i]);
             if (!tmp)
                 return -1;
             if (!add_color(file[i], tmp, config))
+                return -1;
+            if (!parse_color(config))
                 return -1;
         }
         i++;

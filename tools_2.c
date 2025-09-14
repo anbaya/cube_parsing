@@ -1,5 +1,26 @@
 #include "cube.h"
 
+int parse_color(t_config *config)
+{
+    int i;
+
+    i = 0;
+    while (config->f_rgb[i])
+    {
+        if (config->f_rgb[i] < 0 || config->f_rgb[i] > 255)
+            return 0;
+        i++;
+    }
+    i = 0;
+    while (config->c_rgb[i])
+    {
+        if (config->c_rgb[i] < 0 || config->c_rgb[i] > 255)
+            return 0;
+        i++;
+    }
+    return 1;
+}
+
 int is_color(char *line)
 {
     if (!line)
@@ -9,7 +30,7 @@ int is_color(char *line)
     return 0;
 }
 
-char *parse_color(char *line)
+char *read_color(char *line)
 {
     int i;
     int j;
@@ -18,11 +39,11 @@ char *parse_color(char *line)
     i = 0;
     j = 0;
     while (line[i] && (line[i] != 'F' && line[i] != 'C'))
-    i++;
+        i++;
     while (line[i] && (line[i] == 'F' || line[i] == 'C'))
-    i++;
-    while (line[i] && line[i] == ' ')
-    i++;
+        i++;
+    while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+        i++;
     while (line[i])
     {
         while (line[i] && (line[i] >= '0' && line[i] <= '9') && j < 9)
@@ -34,11 +55,9 @@ char *parse_color(char *line)
             return (0);
         if (line[i] == '\n')
             break ;
-        if (ft_atoi(num) < 0 || ft_atoi(num) > 255)
-            return (0);
         if (j < 8)
             num[j++] = ',';
-        if (line[i] == ',')
+        while (line[i] == ',')
             i++;
         while (line[i] == ' ')
             i++;
