@@ -57,15 +57,17 @@ char *read_color(char *line)
             break ;
         if (j < 8)
             num[j++] = ',';
-        while (line[i] == ',')
+        if (line[i] == ',' && line[i + 1] != ',')
             i++;
+        else
+            return (NULL);
         while (line[i] == ' ')
             i++;
     }
     return (ft_strdup(num));
 }
 
-int add_color(char *line, char *color, t_config *config)
+int add_color(char *line, char *color, t_config *config, int index)
 {
     int i;
     int rgb[3];
@@ -86,12 +88,14 @@ int add_color(char *line, char *color, t_config *config)
         config->f_rgb[0] = rgb[0];
         config->f_rgb[1] = rgb[1];
         config->f_rgb[2] = rgb[2];
+        config->f_i = index;
     }
     else if (line[i] == 'C')
     {
         config->c_rgb[0] = rgb[0];
         config->c_rgb[1] = rgb[1];
         config->c_rgb[2] = rgb[2];
+        config->c_i = index;
     }
     i = 0;
     while (tmp[i])

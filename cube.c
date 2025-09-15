@@ -81,7 +81,7 @@ int main(int argc, char **argv)
         return (ft_putstr_fd("Error\nInvalid file\n", 2), 1);
     config = init_config(argv[1]);
     if (!config)
-        return (1);
+        return (ft_putstr_fd("Error\nInvalid File\n", 2), 1);
     get_player(config, config->map);
     if (map_parsing(config, config->p_x, config->p_y))
     {

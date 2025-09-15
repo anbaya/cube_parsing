@@ -26,10 +26,12 @@ typedef struct s_config
     char *so_path;
     char *we_path;
     char *ea_path;
-    void *north_texture;
-    void *south_texture;
-    void *west_texture;
-    void *east_texture;
+    int no_i;
+    int so_i;
+    int we_i;
+    int ea_i;
+    int f_i;
+    int c_i;
     int f_rgb[3];
     int c_rgb[3];
 } t_config;
@@ -41,18 +43,19 @@ char **load_map(t_config *config, char **file);
 int load_textures(char **file, t_config *config);
 int load_colors(char **file, t_config *config);
 char **map_dup(t_config *config);
+int parse_file(char **file, t_config *config);
 int get_player(t_config *config, char **map);
 
 // texture helpers
 int is_map(char *line);
 int is_texture(char *line);
 int parse_texture(t_config *config, char *line);
-int add_texture(char *line, t_config *config);
+int add_texture(char *line, t_config *config, int index);
 
 // color helpers
 int is_color(char *line);
 char *read_color(char *line);
-int add_color(char *line, char *color, t_config *config);
+int add_color(char *line, char *color, t_config *config, int index);
 int parse_color(t_config *config);
 
 // generic utils

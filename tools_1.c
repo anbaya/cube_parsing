@@ -81,7 +81,7 @@ int parse_texture(t_config *config, char *line)
     return (mlx_destroy_image(config->mlx, img), 1);
 }
 
-int add_texture(char *line, t_config *config)
+int add_texture(char *line, t_config *config, int index)
 {
     char *tmp;
     int i;
@@ -91,17 +91,13 @@ int add_texture(char *line, t_config *config)
     while (tmp[i] && (tmp[i] == ' ' || tmp[i] == '\t'))
         i++;
     if (ft_strnstr(tmp, "NO ", 3) && parse_texture(config, tmp + i))
-        config->no_path = tmp + i;
+        return (config->no_path = tmp + i, config->no_i = index, 1);  
     else if (ft_strnstr(tmp, "SO ", 3) && parse_texture(config, tmp + i))
-        config->so_path = tmp + i;
+        return (config->so_path = tmp + i, config->so_i = index, 1);
     else if (ft_strnstr(tmp, "WE ", 3) && parse_texture(config, tmp + i))
-        config->we_path = tmp + i;
+        return (config->we_path = tmp + i, config->we_i = index, 1);
     else if (ft_strnstr(tmp, "EA ", 3) && parse_texture(config, tmp + i))
-        config->ea_path = tmp + i;
+        return (config->ea_path = tmp + i, config->ea_i = index, 1);
     else
-    {
-        free(tmp);
-        return 0; // Invalid texture line
-    }
-    return 1;   
+        return (free(tmp), 0);
 }
