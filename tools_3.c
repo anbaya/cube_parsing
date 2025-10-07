@@ -25,18 +25,24 @@ int get_player(t_config *config, char **map)
     return (0);
 }
 
-int parse_file(char **file, t_config *config)
+int index_check(t_config *config, int i)
 {
-    int i;
+    if (i != config->no_i && i != config->so_i &&
+        i != config->we_i && i != config->ea_i &&
+        i != config->f_i && i != config->c_i)
+        return 1;
+    return 0;
+}
+
+int before_map(t_config *config, char **file, int i)
+{
     int j;
 
-    i = 0;
+    j = 0;
     while (file[i] && i < config->map_start)
     {
         j = 0;
-        if (i != config->no_i && i != config->so_i &&
-            i != config->we_i && i != config->ea_i &&
-            i != config->f_i && i != config->c_i)
+        if (index_check(config, i))
             {
                 while (file[i][j] == ' ' || file[i][j] == '\t')
                     j++;
@@ -45,7 +51,13 @@ int parse_file(char **file, t_config *config)
             }
         i++;
     }
-    i = config->map_end + 1;
+    return (1);
+}
+
+int after_map(char **file, int i)
+{
+    int j;
+
     while (file[i])
     {
         j = 0;
@@ -55,5 +67,18 @@ int parse_file(char **file, t_config *config)
             return (0);
         i++;
     }
+    return (1);
+}
+
+int parse_file(char **file, t_config *config)
+{
+    int i;
+
+    i = 0;
+    if (!before_map(config, file, i))
+        return 0;
+    i = config->map_end + 1;
+    if (!after_map(file, i))
+        return 0;
     return (1);
 }

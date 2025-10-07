@@ -8,7 +8,8 @@ int map_parsing(t_config *config, int i, int j)
         return 0;
     if (config->nap[i][j] == '1' || config->nap[i][j] == '@')
         return 0;
-    if (config->nap[i][j] == ' ' || config->nap[i][j] == '\n')
+    if (config->nap[i][j] == ' ' || config->nap[i][j] == '\t'
+        || config->nap[i][j] == '\n')
     {
         space = 1;
         return 1;

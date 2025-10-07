@@ -65,8 +65,8 @@ int is_texture(char *line)
         return 0;
     while (*line == ' ' || *line == '\t')
         line++;
-    if (ft_strnstr(line, "NO ", 3) || ft_strnstr(line, "SO ", 3)
-        || ft_strnstr(line, "WE ", 3) || ft_strnstr(line, "EA ", 3))
+    if (ft_strnstr(line, "NO", 2) || ft_strnstr(line, "SO", 2)
+        || ft_strnstr(line, "WE", 2) || ft_strnstr(line, "EA", 2))
         return 1;
     return 0;
 }
@@ -87,16 +87,16 @@ int add_texture(char *line, t_config *config, int index)
     int i;
 
     i = 2;
-    tmp = ft_strtrim(line, " \n\r\t");
+    tmp = ft_strtrim(line, " \n\t");
     while (tmp[i] && (tmp[i] == ' ' || tmp[i] == '\t'))
         i++;
-    if (ft_strnstr(tmp, "NO ", 3) && parse_texture(config, tmp + i))
+    if (!config->no_path && ft_strnstr(tmp, "NO", 2) && parse_texture(config, tmp + i))
         return (config->no_path = tmp + i, config->no_i = index, 1);  
-    else if (ft_strnstr(tmp, "SO ", 3) && parse_texture(config, tmp + i))
+    else if (!config->so_path && ft_strnstr(tmp, "SO", 2) && parse_texture(config, tmp + i))
         return (config->so_path = tmp + i, config->so_i = index, 1);
-    else if (ft_strnstr(tmp, "WE ", 3) && parse_texture(config, tmp + i))
+    else if (!config->we_path && ft_strnstr(tmp, "WE", 2) && parse_texture(config, tmp + i))
         return (config->we_path = tmp + i, config->we_i = index, 1);
-    else if (ft_strnstr(tmp, "EA ", 3) && parse_texture(config, tmp + i))
+    else if (!config->ea_path && ft_strnstr(tmp, "EA", 2) && parse_texture(config, tmp + i))
         return (config->ea_path = tmp + i, config->ea_i = index, 1);
     else
         return (free(tmp), 0);

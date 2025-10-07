@@ -30,27 +30,26 @@ int is_color(char *line)
     return 0;
 }
 
-char *read_color(char *line)
+void skip_space(char *line, int *i)
 {
-    int i;
+    while (line[*i] && (line[*i] == ' ' || line[*i] == '\t'))
+        (*i)++;
+    while (line[*i] && (line[*i] == 'F' || line[*i] == 'C'))
+        (*i)++;
+    while (line[*i] && (line[*i] == ' ' || line[*i] == '\t'))
+        (*i)++;
+}
+
+char *c_reader(char *line, int i)
+{
     int j;
     char num[] = "000,000,000";
 
-    i = 0;
     j = 0;
-    while (line[i] && (line[i] != 'F' && line[i] != 'C'))
-        i++;
-    while (line[i] && (line[i] == 'F' || line[i] == 'C'))
-        i++;
-    while (line[i] && (line[i] == ' ' || line[i] == '\t'))
-        i++;
     while (line[i])
     {
         while (line[i] && (line[i] >= '0' && line[i] <= '9') && j < 9)
-        {
-            num[j++] = line[i];
-            i++;
-        }
+            num[j++] = line[i++];
         if (line[i] != ',' && line[i] != '\0' && j != 8 && line[i] != '\n')
             return (0);
         if (line[i] == '\n')
@@ -61,26 +60,27 @@ char *read_color(char *line)
             i++;
         else
             return (NULL);
-        while (line[i] == ' ')
-            i++;
+        skip_space(line, &i);
     }
     return (ft_strdup(num));
 }
 
-int add_color(char *line, char *color, t_config *config, int index)
+char *read_color(char *line)
 {
     int i;
-    int rgb[3];
-    char **tmp;
 
     i = 0;
-    tmp = ft_split(color, ',');
-    if (!tmp)
-        return (0);
-    rgb[0] = ft_atoi(tmp[0]);
-    rgb[1] = ft_atoi(tmp[1]);
-    rgb[2] = ft_atoi(tmp[2]);
-    free(color);
+    skip_space(line, &i);
+    if (!(line[i] >= '0' && line[i] <= '9'))
+        return (NULL);
+    return (c_reader(line, i));
+}
+
+void color_select(t_config *config, char *line, int *rgb, int index)
+{
+    int i;
+
+    i = 0;
     while (line[i] && (line[i] != 'F' && line[i] != 'C'))
         i++;
     if (line[i] == 'F')
@@ -97,7 +97,23 @@ int add_color(char *line, char *color, t_config *config, int index)
         config->c_rgb[2] = rgb[2];
         config->c_i = index;
     }
+}
+
+int add_color(char *line, char *color, t_config *config, int index)
+{
+    int i;
+    int rgb[3];
+    char **tmp;
+
     i = 0;
+    tmp = ft_split(color, ',');
+    if (!tmp)
+        return (0);
+    rgb[0] = ft_atoi(tmp[0]);
+    rgb[1] = ft_atoi(tmp[1]);
+    rgb[2] = ft_atoi(tmp[2]);
+    free(color);
+    color_select(config, line, rgb, index);
     while (tmp[i])
         free(tmp[i++]);
     free(tmp);
