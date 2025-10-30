@@ -56,8 +56,9 @@ int	empty_check(char **map, int x, int y)
     if (y < 0 || map[y] == NULL || x < 0 || map[y][x] == '\0')
         return (0);
     if (map[y][x] == '1' || map[y][x] == 'X')
+    {
         return (0);
-    // If a floor cell is found, set the floor flag
+    }
 	if (map[y][x] == ' ')
 		space = 1;
 	map[y][x] = 'X';
