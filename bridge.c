@@ -6,7 +6,7 @@
 /*   By: anbaya <anbaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 09:24:48 by anbaya            #+#    #+#             */
-/*   Updated: 2025/11/02 10:45:34 by anbaya           ###   ########.fr       */
+/*   Updated: 2025/11/02 10:52:06 by anbaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 t_textures	*bridge_textures(t_config *config)
 {
-	t_textures	*textures = (t_textures *)malloc(sizeof(t_textures));
+	t_textures	*textures;
+
+	textures = (t_textures *)malloc(sizeof(t_textures));
 	if (!textures)
 		return (NULL);
 	textures->no = config->no_path;
@@ -27,7 +29,9 @@ t_textures	*bridge_textures(t_config *config)
 
 t_colors	*bridge_colors(t_config *config)
 {
-	t_colors	*colors = (t_colors *)malloc(sizeof(t_colors));
+	t_colors	*colors;
+
+	colors = (t_colors *)malloc(sizeof(t_colors));
 	if (!colors)
 		return (NULL);
 	colors->floor[0] = config->f_rgb[0];
@@ -41,7 +45,9 @@ t_colors	*bridge_colors(t_config *config)
 
 t_player	*bridge_player(t_config *config)
 {
-	t_player	*player = (t_player *)malloc(sizeof(t_player));
+	t_player	*player;
+
+	player = (t_player *)malloc(sizeof(t_player));
 	if (!player)
 		return (NULL);
 	player->y = config->p_y;
