@@ -1,27 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   tools_5.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anbaya <anbaya@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/10 15:00:09 by anbaya            #+#    #+#             */
-/*   Updated: 2025/10/30 11:09:07 by anbaya           ###   ########.fr       */
+/*   Created: 2025/10/30 11:38:04 by anbaya            #+#    #+#             */
+/*   Updated: 2025/10/30 11:39:04 by anbaya           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "cube.h"
 
-# include "libft.h"
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
-# endif
+int	add_color(char *line, char *color, t_config *config, int index)
+{
+	int		i;
+	int		rgb[3];
+	char	**tmp;
 
-char	*get_next_line(int fd);
-
-#endif
+	i = 0;
+	tmp = ft_split(color, ',');
+	if (!tmp)
+		return (0);
+	rgb[0] = ft_atoi(tmp[0]);
+	rgb[1] = ft_atoi(tmp[1]);
+	rgb[2] = ft_atoi(tmp[2]);
+	free(color);
+	color_select(config, line, rgb, index);
+	while (tmp[i])
+		free(tmp[i++]);
+	free(tmp);
+	return (1);
+}

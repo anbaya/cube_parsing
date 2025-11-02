@@ -1,9 +1,10 @@
 NAME = cube
 CC = cc
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -Werror
 LIBMLX = libft.a libmlx.a -lXext -lX11 -lm
-SRCS = cube.c get_next_line.c get_next_line_utils.c \
-		reading.c tools_1.c tools_2.c tools_3.c first_steps_of_walls_parsing.c
+SRCS = cube.c get_next_line.c first_steps_of_walls_parsing.c \
+		reading.c tools_1.c tools_2.c tools_3.c tools_4.c tools_5.c \
+		bridge.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
